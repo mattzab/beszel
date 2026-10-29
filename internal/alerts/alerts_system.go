@@ -42,12 +42,16 @@ func (am *AlertManager) HandleSystemAlerts(systemRecord *core.Record, data *syst
 	if err := am.HandleSystemdAlerts(systemRecord); err != nil {
 		am.hub.Logger().Error("Error handling systemd alerts", "err", err)
 	}
+	// Fork: pending package update alerts read the saved system info.
+	if err := am.HandlePackageUpdateAlerts(systemRecord); err != nil {
+		am.hub.Logger().Error("Error handling package update alerts", "err", err)
+	}
 
 	if data == nil {
 		return nil
 	}
 
-	alerts := am.alertsCache.GetAlertsExcludingNames(systemRecord.Id, "Status", alertNameSystemdFailed, containerAlertName, alertNameNetworkMonitorLoss, alertNameNetworkMonitorCert)
+	alerts := am.alertsCache.GetAlertsExcludingNames(systemRecord.Id, "Status", alertNameSystemdFailed, containerAlertName, alertNameNetworkMonitorLoss, alertNameNetworkMonitorCert, alertNameSecurityUpdates, alertNamePackageUpdates, alertNameKernelChanged)
 	if len(alerts) == 0 {
 		return nil
 	}

@@ -1,5 +1,6 @@
 import { t } from "@lingui/core/macro"
 import { ContainerIcon, CpuIcon, HardDriveIcon, MemoryStickIcon, NetworkIcon, ServerCrashIcon, ServerIcon, ShieldCheckIcon } from "lucide-react"
+import { PackageIcon, RefreshCwIcon, ShieldAlertIcon } from "lucide-react" // fork
 import type { RecordSubscription } from "pocketbase"
 import { EthernetIcon, GpuIcon } from "@/components/ui/icons"
 import { $alerts } from "@/lib/stores"
@@ -149,6 +150,38 @@ export const alertInfo: Record<string, AlertInfo> = {
     desc: () => t`Triggers when any systemd service enters the failed state`,
     triggeredDesc: () => t`One or more services are in a failed state`,
     /** Fires on first observation - the agent only polls systemd every 10 minutes */
+    noDuration: true,
+    noThreshold: true,
+  },
+  // Fork (mattzab/beszel): package update and kernel change alerts.
+  // Plain strings (not t``) because the fork does not ship translations for them.
+  SecurityUpdates: {
+    name: () => "Security Updates",
+    unit: " updates",
+    icon: ShieldAlertIcon,
+    desc: () => "Triggers when pending security updates reach a threshold (apt, dnf, zypper)",
+    note: () => "Re-notifies when the count rises and when updates are cleared. Requires agent v0.21.0+ on Linux, not in Docker.",
+    noDuration: true,
+    min: 1,
+    max: 50,
+    start: 1,
+  },
+  PackageUpdates: {
+    name: () => "Package Updates",
+    unit: " updates",
+    icon: PackageIcon,
+    desc: () => "Triggers when total pending package updates reach a threshold",
+    noDuration: true,
+    min: 1,
+    max: 200,
+    start: 10,
+  },
+  KernelChanged: {
+    name: () => "Kernel / OS Change",
+    unit: "",
+    icon: RefreshCwIcon,
+    desc: () => "Notifies when the kernel or OS version changes, checked when the agent reconnects",
+    triggeredDesc: () => "Kernel or OS changed",
     noDuration: true,
     noThreshold: true,
   },

@@ -242,11 +242,11 @@ func (info *UpdateInfo) getUpdate(e *core.RequestEvent) error {
 		return e.JSON(http.StatusOK, info)
 	}
 	info.lastCheck = time.Now()
-	latestRelease, err := ghupdate.FetchLatestRelease(context.Background(), http.DefaultClient, "")
+	latestRelease, err := ghupdate.FetchLatestRelease(context.Background(), http.DefaultClient, forkReleaseURL)
 	if err != nil {
 		return err
 	}
-	currentVersion, err := semver.Parse(strings.TrimPrefix(beszel.Version, "v"))
+	currentVersion, err := semver.Parse(strings.TrimPrefix(CurrentForkVersion(), "v"))
 	if err != nil {
 		return err
 	}

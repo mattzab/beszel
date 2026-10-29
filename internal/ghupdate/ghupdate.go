@@ -74,6 +74,8 @@ type Config struct {
 	// UseMirror specifies whether to use the beszel.dev mirror instead of GitHub API.
 	// When false (default), always uses api.github.com. When true, uses gh.beszel.dev.
 	UseMirror bool
+	// CurrentVersion overrides beszel.Version as the installed version (fork).
+	CurrentVersion string
 }
 
 type updater struct {
@@ -85,6 +87,9 @@ func Update(config Config) (updated bool, err error) {
 	p := &updater{
 		currentVersion: beszel.Version,
 		config:         config,
+	}
+	if config.CurrentVersion != "" {
+		p.currentVersion = config.CurrentVersion
 	}
 
 	return p.update()

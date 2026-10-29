@@ -32,6 +32,8 @@ func Update(cmd *cobra.Command, _ []string) {
 		ArchiveExecutable: "beszel",
 		DataDir:           dataDir,
 		UseMirror:         useMirror,
+		Owner:             ForkOwner,            // fork: update hub from mattzab/beszel
+		CurrentVersion:    CurrentForkVersion(), // fork: compare against -mz.N releases
 	})
 	if err != nil {
 		log.Fatal(err)

@@ -1,0 +1,64 @@
+# Fork (mattzab/beszel): hub-only release config.
+# Used by .github/workflows/fork-release.yml for tags like v0.21.1-mz.1.
+# Asset names match upstream so the hub updater and install-hub.sh work unchanged.
+version: 2
+
+project_name: beszel
+
+builds:
+  - id: beszel
+    binary: beszel
+    main: internal/cmd/hub/hub.go
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X github.com/henrygd/beszel/internal/hub.ForkVersion={{ .Version }}
+    goos:
+      - linux
+      - darwin
+      - windows
+      - freebsd
+    goarch:
+      - amd64
+      - arm64
+      - arm
+    ignore:
+      - goos: windows
+        goarch: arm64
+      - goos: windows
+        goarch: arm
+      - goos: freebsd
+        goarch: arm64
+      - goos: freebsd
+        goarch: arm
+      - goos: darwin
+        goarch: arm
+
+archives:
+  - id: beszel
+    formats: [tar.gz]
+    ids:
+      - beszel
+    name_template: >-
+      {{ .Binary }}_
+      {{- .Os }}_
+      {{- .Arch }}
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: checksums.txt
+
+release:
+  # The hub updater reads /releases/latest, which skips drafts and prereleases.
+  draft: false
+  prerelease: "false"
+  make_latest: "true"
+  mode: replace
+  header: |
+    Hub-only fork release of [henrygd/beszel](https://github.com/henrygd/beszel) v{{ .Major }}.{{ .Minor }}.{{ .Patch }}.
+    Adds Security Updates, Package Updates, and Kernel / OS Change alerts. Agents should keep using upstream releases.
+
+changelog:
+  disable: true

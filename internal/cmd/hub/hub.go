@@ -42,7 +42,7 @@ func getBaseApp() *pocketbase.PocketBase {
 		DefaultDataDir: beszel.AppName + "_data",
 		DefaultDev:     isDev,
 	})
-	baseApp.RootCmd.Version = beszel.Version
+	baseApp.RootCmd.Version = hub.DisplayVersion()
 	baseApp.RootCmd.Use = beszel.AppName
 	baseApp.RootCmd.Short = ""
 	// add update command

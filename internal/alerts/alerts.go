@@ -25,6 +25,8 @@ type AlertManager struct {
 	pendingAlerts   sync.Map
 	alertsCache     *AlertsCache
 	networkMonitors *networkMonitorCache
+	// packageUpdateCounts holds the last count seen per package update alert (fork).
+	packageUpdateCounts sync.Map
 }
 
 type AlertMessageData struct {

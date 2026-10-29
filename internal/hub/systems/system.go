@@ -265,6 +265,7 @@ func (sys *System) createRecords(data *system.CombinedData) (*core.Record, error
 	}
 	hub := sys.manager.hub
 	savedMonitorProbes := make(map[string]int64)
+	var detailsChange *systemDetailsChange // fork: kernel / OS change alerts
 	err = hub.RunInTransaction(func(txApp core.App) error {
 		// add system_stats record
 		systemStatsCollection, err := txApp.FindCachedCollectionByNameOrId("system_stats")
@@ -310,6 +311,8 @@ func (sys *System) createRecords(data *system.CombinedData) (*core.Record, error
 
 		// add system details record
 		if data.Details != nil {
+			change := readPreviousDetails(txApp, sys.Id, data.Details)
+			detailsChange = &change
 			if err := createSystemDetailsRecord(txApp, data.Details, sys.Id); err != nil {
 				return err
 			}
@@ -365,6 +368,7 @@ func (sys *System) createRecords(data *system.CombinedData) (*core.Record, error
 		}
 	}
 	if err == nil {
+		notifyDetailsChange(hub, systemRecord, detailsChange)
 		if alertErr := hub.HandleNetworkMonitorAlerts(systemRecord, data.Monitors); alertErr != nil {
 			hub.Logger().Error("Error handling network monitor alerts", "err", alertErr)
 		}
