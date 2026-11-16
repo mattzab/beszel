@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"strings"
 
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 	"github.com/henrygd/beszel/internal/entities/system"
-	"github.com/pocketbase/pocketbase/core"
 )
 
 const (

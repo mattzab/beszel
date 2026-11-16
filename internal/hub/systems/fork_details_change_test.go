@@ -7,9 +7,9 @@ package systems
 import (
 	"testing"
 
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 	"github.com/henrygd/beszel/internal/alerts"
 	"github.com/henrygd/beszel/internal/entities/system"
-	"github.com/pocketbase/pocketbase/core"
 	"github.com/stretchr/testify/require"
 )
 

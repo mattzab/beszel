@@ -5,8 +5,8 @@ package migrations
 import (
 	"slices"
 
-	"github.com/pocketbase/pocketbase/core"
-	m "github.com/pocketbase/pocketbase/migrations"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
+	m "ganigeorgiev.com/pocketbase/pocketbase/migrations"
 )
 
 var forkAlertNames = []string{"SecurityUpdates", "PackageUpdates", "KernelChanged"}

@@ -3,10 +3,10 @@ package systems
 // Fork (mattzab/beszel): detects kernel / OS changes in system details.
 
 import (
+	"ganigeorgiev.com/pocketbase/dbx"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 	"github.com/henrygd/beszel/internal/alerts"
 	"github.com/henrygd/beszel/internal/entities/system"
-	"github.com/pocketbase/dbx"
-	"github.com/pocketbase/pocketbase/core"
 )
 
 // systemDetailsChange aliases the alert type so system.go needs no new import.
